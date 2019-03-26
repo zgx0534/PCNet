@@ -2,10 +2,7 @@
 import os
 import sys
 import h5py
-
-
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
 
 #设置环境变量和路径信息
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,7 +17,4 @@ import points2pcd
 TRAIN_FILES=providerUtil.getDataFiles(os.path.join(TRAIN_FILES_DIR))
 FileHandle=h5py.File(TRAIN_FILES[3],'r')
 p=FileHandle['data'][203]
-points2pcd.points2pcd(p)
-
-
-
+# points2pcd.points2pcd(p)

@@ -10,7 +10,7 @@ def points2pcd(points):
     point_num=points.shape[0]
 
     # headers
-    handle.write('# .PCD v0.7 - Point Cloud Data file format\nVERSION 0.7\nFIELDS x y z\nSIZE 4 4 4\nTYPE F F F\nCOUNT 1 1 1')
+    handle.write('# . PCD v0.7 - Point Cloud Data file format\nVERSION 0.7\nFIELDS x y z\nSIZE 4 4 4\nTYPE F F F\nCOUNT 1 1 1')
     string = '\nWIDTH ' + str(point_num)
     handle.write(string)
     handle.write('\nHEIGHT 1\nVIEWPOINT 0 0 0 1 0 0 0')
