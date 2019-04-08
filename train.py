@@ -1,20 +1,23 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
-import h5py
-import numpy as np
+import importlib
+import tensorflow as tf
 
-#设置环境变量和路径信息
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join('utils'))
-sys.path.append(os.path.join('models'))
-TRAIN_FILES_DIR=os.path.join(BASE_DIR,'data/modelnet40_ply_hdf5_2048/train_files.txt')
+sys.path.append(os.path.join(BASE_DIR, 'models'))
+sys.path.append(os.path.join(BASE_DIR, 'utils'))
 
-import providerUtil
-import points2pcd
+import myProvider
 
-#获得数据
-TRAIN_FILES=providerUtil.getDataFiles(os.path.join(TRAIN_FILES_DIR))
-FileHandle=h5py.File(TRAIN_FILES[3],'r')
-p=FileHandle['data'][203]
-# points2pcd.points2pcd(p)
+def train():
+    with tf.Graph().as_default():
+        with tf.device('/gpu:0'):
+
+            TRAIN_FILES = myProvider.getDataFiles( \
+                os.path.join(BASE_DIR, 'data/modelnet40_ply_hdf5_2048/train_files.txt'))
+
+
+
+if __name__ == "__main__":
+    train()
