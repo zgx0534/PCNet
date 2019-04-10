@@ -11,6 +11,7 @@ sys.path.append(os.path.join(BASE_DIR, 'models'))
 sys.path.append(os.path.join(BASE_DIR, 'utils'))
 
 import myProvider
+import tf_util
 
 BATCH_SIZE = 32
 NUM_POINT = 2048
@@ -38,9 +39,18 @@ def get_bn_decay(batch):
 def train():
     with tf.Graph().as_default():
         with tf.device('/gpu:0'):
+            # 通过前向传播得到一组的平均loss
             pointclouds_ph = tf.placeholder(tf.float32, shape=(BATCH_SIZE, NUM_POINT, 3))
             labels_ph = tf.placeholder(tf.int32, shape=(BATCH_SIZE))
             pred = MODEL.forward(pointclouds_ph)
+            loss = tf_util.get_loss(pred, labels_ph)
+            # 获得正确率(一组正确数/一组总数)
+            correct = tf.equal(tf.argmax(pred, 1), tf.to_int64(labels_ph))
+            accuracy = tf.reduce_sum(tf.cast(correct, tf.float32)) / float(BATCH_SIZE)
+
+            # 后向传播定义
+            learning_rate = get_learning_rate(batch)
+
 
         # 声明会话(动态分配显存 允许自动调用设备 不输出设备信息 )
         config = tf.ConfigProto()

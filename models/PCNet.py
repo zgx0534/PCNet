@@ -22,4 +22,11 @@ def forward(point_clouds):
     net = tf.nn.max_pool(net,[1,2048,1,1],[1,1,1,1],padding='VALID')
     # net (32, 1, 1, 1024)
     net = tf.reshape(net, [32, -1])
-    print net.shape
+    net = tf_util.fully_connected(net,512)
+    net = tf.nn.dropout(net,keep_prob=0.7)
+    net = tf_util.fully_connected(net, 256)
+    net = tf.nn.dropout(net, keep_prob=0.7)
+    net = tf_util.fully_connected(net, 40)
+    return net
+
+
