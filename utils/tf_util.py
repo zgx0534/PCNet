@@ -21,3 +21,4 @@ def get_loss(pred,labels):
     loss = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=pred, labels=labels)
     batch_avg_loss = tf.reduce_mean(loss)
     return batch_avg_loss
+
