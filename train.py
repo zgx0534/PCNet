@@ -5,6 +5,7 @@ import importlib
 import tensorflow as tf
 import numpy as np
 
+
 # 环境变量
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 LOG_DIR = os.path.join(BASE_DIR, 'log')
@@ -22,7 +23,7 @@ LEARN_RATE_BATCH_SIZE = 500
 
 TRAIN_FILES = myProvider.getDataFiles( \
     os.path.join(BASE_DIR, 'data/modelnet40_ply_hdf5_2048/train_files.txt'))
-MODEL = importlib.import_module("PCNet")
+MODEL = importlib.import_module("net_improved")
 
 # 写log方法
 LOG_FOUT = open(os.path.join(LOG_DIR, 'log_train.txt'), 'w')
@@ -128,11 +129,11 @@ def train_one_epoch(sess, param_dict, train_writer):
 
 
             # ××××××  旋转和抖动  ××××××
-            rotated_data = myProvider.rotate_point_cloud(data_batch_size)
-            jittered_data = myProvider.jitter_point_cloud(rotated_data)
+            #rotated_data = myProvider.rotate_point_cloud(data_batch_size)
+            # jittered_data = myProvider.jitter_point_cloud(data_batch_size)
 
 
-            feed_dict = {param_dict['pointclouds_ph']: jittered_data, param_dict['labels_ph']: labels}
+            feed_dict = {param_dict['pointclouds_ph']: data_batch_size, param_dict['labels_ph']: labels}
             _, accuracy_val, learn_rate_val, loss_val, summary, step_val = sess.run(
                 [param_dict['train_op'], param_dict['accuracy'], param_dict['learning_rate'], param_dict['loss'],
                  param_dict['merged'], param_dict['global_step']], feed_dict=feed_dict)
