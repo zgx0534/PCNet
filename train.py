@@ -129,11 +129,11 @@ def train_one_epoch(sess, param_dict, train_writer):
 
 
             # ××××××  旋转和抖动  ××××××
-            #rotated_data = myProvider.rotate_point_cloud(data_batch_size)
-            # jittered_data = myProvider.jitter_point_cloud(data_batch_size)
+            rotated_data = myProvider.rotate_point_cloud(data_batch_size)
+            jittered_data = myProvider.jitter_point_cloud(rotated_data)
 
 
-            feed_dict = {param_dict['pointclouds_ph']: data_batch_size, param_dict['labels_ph']: labels}
+            feed_dict = {param_dict['pointclouds_ph']: jittered_data, param_dict['labels_ph']: labels}
             _, accuracy_val, learn_rate_val, loss_val, summary, step_val = sess.run(
                 [param_dict['train_op'], param_dict['accuracy'], param_dict['learning_rate'], param_dict['loss'],
                  param_dict['merged'], param_dict['global_step']], feed_dict=feed_dict)
